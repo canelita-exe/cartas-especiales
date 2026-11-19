@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Una carta para ti ♡</title>
+<style>
+:root{--bg:#fff1f5;--paper:#fffdfb;--ink:#613044;--accent:#b72f50;--soft:#f8d7e1;--candy:#ff8fab}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Georgia,serif;transition:.3s}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.2;background-image:radial-gradient(var(--accent) 1px,transparent 1px);background-size:25px 25px}
+header{text-align:center;padding:30px 15px 22px;background:linear-gradient(135deg,var(--paper),var(--soft))}
+header h1{font-size:clamp(2rem,6vw,3.2rem);font-weight:500;color:var(--accent);margin:8px 0}
+header p{font:14px Arial,sans-serif}
+.layout{max-width:1120px;margin:24px auto;padding:0 14px 50px;display:grid;grid-template-columns:320px 1fr;gap:20px}
+.panel,.stage{background:var(--paper);border:1px solid var(--soft);border-radius:20px;box-shadow:0 10px 30px #54203318}
+.panel{padding:18px;align-self:start}.panel h2{font:700 17px Arial,sans-serif;margin:0 0 12px}
+details{border-top:1px solid var(--soft);padding:11px 0}summary{font:700 14px Arial,sans-serif;color:var(--accent);cursor:pointer}
+label{display:block;font:12px Arial,sans-serif;margin:11px 0 5px}
+input,textarea,select{width:100%;padding:10px;border:1px solid #e8c4cf;border-radius:9px;background:white;color:#392532;font:13px Arial,sans-serif}
+textarea{min-height:90px;resize:vertical}input[type=color]{height:37px;padding:3px}
+button{border:0;border-radius:999px;padding:11px 15px;background:var(--accent);color:white;font:700 13px Arial,sans-serif;cursor:pointer;margin:6px 4px 0 0}
+button.alt{background:var(--soft);color:var(--ink);border:1px solid #e7c4cf}
+.note{font:11px/1.5 Arial,sans-serif;opacity:.7}.status{font:12px Arial,sans-serif;min-height:18px}
+.stage{padding:clamp(15px,4vw,36px);min-height:580px;overflow:hidden}
+.cover{text-align:center;max-width:540px;margin:10px auto 28px}
+.envelope{height:260px;max-width:440px;margin:18px auto 10px;position:relative;background:var(--soft);border:2px solid var(--accent);border-radius:8px;box-shadow:0 10px 24px #0002;overflow:hidden}
+.env-back{position:absolute;inset:0;background:linear-gradient(145deg,transparent 49.5%,var(--paper) 50%) left/50% 100% no-repeat,linear-gradient(-145deg,transparent 49.5%,var(--paper) 50%) right/50% 100% no-repeat}
+.flap{position:absolute;z-index:4;top:0;left:0;width:100%;height:62%;background:var(--soft);clip-path:polygon(0 0,100% 0,50% 100%);transform-origin:top;transition:transform .8s ease}
+.seal{position:absolute;z-index:6;left:50%;top:49%;transform:translate(-50%,-50%);width:72px;height:72px;border-radius:50%;background:var(--accent);color:white;border:5px double #ffdbe4;font-size:30px;display:grid;place-items:center;box-shadow:0 5px 12px #0002}
+.letter-slip{position:absolute;z-index:3;left:7%;width:86%;height:86%;top:9%;padding:20px 12px;background:var(--paper);border:1px solid var(--soft);box-shadow:0 4px 12px #0002;display:flex;flex-direction:column;justify-content:center;align-items:center;transition:transform 1.25s cubic-bezier(.2,.8,.2,1),top 1.25s;transform:translateY(45%);opacity:.95}
+.letter-slip span{font-size:28px;color:var(--accent)}.letter-slip strong{font-size:clamp(15px,3vw,22px);font-weight:500;color:var(--accent)}
+.cover.open .flap{transform:rotateX(180deg);z-index:1}.cover.open .seal{opacity:0;transition:.3s}.cover.open .letter-slip{top:-45%;transform:translateY(-2%);z-index:5}
+.letter{max-width:720px;margin:18px auto;background:var(--paper);border:1px solid var(--soft);padding:clamp(22px,5vw,48px);text-align:center;box-shadow:0 8px 25px #0001;position:relative;opacity:0;transform:translateY(30px);max-height:0;overflow:hidden;transition:opacity .8s,transform .8s,max-height 1s}
+.letter:before{content:"";position:absolute;inset:9px;border:1px dashed var(--soft);pointer-events:none}
+.letter.visible{opacity:1;transform:translateY(0);max-height:3000px}
+.letter>*{position:relative}.letter h2{font-size:clamp(1.8rem,5vw,3rem);font-weight:500;color:var(--accent);margin:12px 0}
+.message{text-align:left;white-space:pre-wrap;line-height:1.9;font-size:18px;min-height:70px}
+.date{font:12px Arial,sans-serif;opacity:.65;margin:12px 0 25px}
+.gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:20px;margin:25px 0}
+.photo-frame{position:relative;padding:11px 10px 15px;background:linear-gradient(135deg,#ffb3c7,#fff0a8,#a8e6cf,#bde0fe,#ffc6ff);border-radius:17px;box-shadow:0 5px 13px #63304422;transform:rotate(var(--tilt,1deg))}
+.photo-frame:nth-child(even){--tilt:-2deg}.photo-frame:nth-child(3n){--tilt:2deg}
+.photo-frame:before{content:"";position:absolute;inset:4px;border:2px dashed #fff;border-radius:12px;pointer-events:none}
+.photo-frame:after{content:"✦ · ✧ · ✦ · ✧ · ✦";position:absolute;left:8px;right:8px;bottom:2px;text-align:center;font:12px Arial,sans-serif;letter-spacing:2px;color:#fff;text-shadow:0 1px 2px #9a4864}
+.photo-frame img{width:100%;height:175px;object-fit:cover;border-radius:9px;border:3px solid #fff;display:block}
+.media iframe{width:100%;aspect-ratio:16/9;border:0;border-radius:12px;margin:10px 0}.music-box{margin:18px auto;max-width:480px;padding:12px;border-radius:15px;background:var(--soft)}
+.music-box p{font:13px Arial,sans-serif;margin:4px}
+.footer{margin-top:28px;color:var(--accent);font-size:15px}
+body.gothic{--bg:#17131b;--paper:#251e2a;--ink:#eadce4;--accent:#bd536f;--soft:#49303e}
+body.vintage{--bg:#eee2ca;--paper:#faf1dd;--ink:#57432e;--accent:#8a5438;--soft:#dfc9a5}
+body.midnight{--bg:#111a2b;--paper:#1b2940;--ink:#e0e7f2;--accent:#9aabd9;--soft:#344663}
+body.rose{--bg:#fff1f5;--paper:#fffdfb;--ink:#613044;--accent:#b72f50;--soft:#f8d7e1}
+@media(max-width:780px){.layout{grid-template-columns:1fr}.envelope{height:225px}}
+</style></head>
+<body class="rose">
+<header><div id="topDecoration">✦ ♡ 🍓 ♡ ✦</div><h1 id="pageTitle">Un pequeño universo para ti</h1><p id="pageSubtitle">Un lugar para guardar palabras, canciones y recuerdos</p></header>
+<div class="layout">
+<aside class="panel">
+<h2>Personaliza tu página ♡</h2>
+<details open><summary>✏️ Todos los textos</summary>
+<label>Título principal</label><input id="pageTitleInput" value="Un pequeño universo para ti">
+<label>Texto debajo del título</label><input id="pageSubtitleInput" value="Un lugar para guardar palabras, canciones y recuerdos">
+<label>Decoración superior (puedes cambiar emojis)</label><input id="topDecorationInput" value="✦ ♡ 🍓 ♡ ✦">
+<label>Texto sobre el sobre</label><input id="coverIntro" value="Un mensaje especial para ti">
+<label>Texto del botón para abrir</label><input id="openButtonText" value="Romper el sello y abrir">
+<label>Nombre de quien recibe</label><input id="to" placeholder="Nombre de esa persona">
+<label>Nombre de quien escribe</label><input id="from" placeholder="Tu nombre">
+<label>Título de la carta</label><input id="heading" value="Hay algo que quiero decirte...">
+<label>Mensaje de la carta</label><textarea id="body" placeholder="Escribe aquí todo lo que quieras decir..."></textarea>
+<label>Texto final / despedida</label><input id="signature" value="Con cariño ♡">
+<label>Texto pequeño al final de la página</label><input id="bottomText" value="Hecho con cariño, para alguien especial ♡">
+</details>
+<details open><summary>🎨 Apariencia</summary>
+<label>Tema</label><select id="theme"><option value="rose">Rosa y dulce</option><option value="gothic">Gótico</option><option value="vintage">Vintage</option><option value="midnight">Noche estrellada</option><option value="custom">Colores personalizados</option></select>
+<label>Tipografía</label><select id="font"><option value="Georgia,serif">Elegante</option><option value="'Trebuchet MS',sans-serif">Sencilla</option><option value="'Courier New',monospace">Máquina de escribir</option><option value="cursive">Manuscrita</option><option value="Arial,sans-serif">Moderna</option></select>
+<label>Color de fondo</label><input id="bg" type="color" value="#fff1f5"><label>Color del texto</label><input id="ink" type="color" value="#613044"><label>Color de detalles</label><input id="accent" type="color" value="#b72f50">
+</details>
+<details open><summary>🎵 Música de YouTube</summary>
+<label>Enlace de YouTube</label><input id="music" placeholder="Pega aquí el enlace de la canción">
+<p class="note">La canción aparecerá con controles para reproducir, pausar y cambiar el volumen. No se inicia automáticamente porque YouTube y los navegadores pueden bloquearlo.</p>
+</details>
+<details open><summary>📷 Fotos con marco de dulce</summary>
+<label>Selecciona una o varias fotos</label><input id="photos" type="file" accept="image/*" multiple>
+<label>O agrega una URL pública de imagen</label><input id="photoUrl" placeholder="https://...">
+<button class="alt" id="addUrl">Agregar foto por enlace</button>
+</details>
+<details><summary>🎬 Video</summary>
+<label>Enlace de video de YouTube</label><input id="videoUrl" placeholder="Pega el enlace">
+<label>O archivo de video (máximo 4 MB)</label><input id="videoFile" type="file" accept="video/*">
+</details>
+<button id="update">Actualizar página</button><button class="alt" id="save">Guardar en este dispositivo</button><button id="share">Copiar enlace para compartir</button>
+<p class="status" id="status" aria-live="polite"></p>
+<p class="note">Los textos y estilos se incluyen en el enlace. Los archivos locales de fotos y video solo se ven en este dispositivo; para compartirlos usa enlaces públicos. Para obtener un enlace accesible por internet, primero publica este archivo HTML en un hosting gratuito.</p>
+</aside>
+<main class="stage">
+<section class="cover" id="cover">
+<div id="coverIntroView">Un mensaje especial para ti</div>
+<div class="envelope"><div class="env-back"></div><div class="letter-slip"><span>♡</span><strong id="slipTitle">Una carta para ti</strong></div><div class="flap"></div><button class="seal" id="seal" aria-label="Abrir sobre">♥</button></div>
+<button class="alt" id="open">Romper el sello y abrir</button>
+</section>
+<article class="letter" id="letter">
+<div id="recipient">Para alguien especial</div><h2 id="showHeading">Hay algo que quiero decirte...</h2><div class="date" id="date"></div>
+<div class="message" id="showBody">Escribe aquí tu carta.</div>
+<div class="gallery" id="gallery"></div><div class="media" id="video"></div>
+<div class="music-box" id="musicBox"><p id="musicCaption">Una canción para acompañar esta carta ♡</p><div id="musicPlayer"></div></div>
+<div class="footer" id="showSignature">Con cariño ♡</div><p id="showBottom">Hecho con cariño, para alguien especial ♡</p>
+</article>
+</main></div>
+<script>
+const $=id=>document.getElementById(id);
+const fields=['pageTitleInput','pageSubtitleInput','topDecorationInput','coverIntro','openButtonText','to','from','heading','body','signature','bottomText','theme','font','bg','ink','accent','music','videoUrl'];
+let photos=[],localVideo='';
+function getData(){let d={};fields.forEach(k=>d[k]=$(k).value);return d}
+function ytId(s){try{let u=new URL(s);if(u.hostname.includes('youtu.be'))return u.pathname.slice(1);if(u.hostname.includes('youtube.com'))return u.searchParams.get('v')||u.pathname.split('/').filter(Boolean).pop()}catch(e){}return ''}
+function render(d=getData()){
+$('pageTitle').textContent=d.pageTitleInput;$('pageSubtitle').textContent=d.pageSubtitleInput;$('topDecoration').textContent=d.topDecorationInput;
+$('coverIntroView').textContent=d.coverIntro;$('open').textContent=d.openButtonText;$('slipTitle').textContent=d.heading||'Una carta para ti';
+$('recipient').textContent=d.to?'Para '+d.to:'Para alguien especial';$('showHeading').textContent=d.heading;$('showBody').textContent=d.body;
+$('showSignature').textContent=d.signature;$('showBottom').textContent=d.bottomText;$('date').textContent=new Date().toLocaleDateString('es-MX',{year:'numeric',month:'long',day:'numeric'});
+document.querySelector('.letter').style.fontFamily=d.font;
+document.body.className=d.theme==='custom'?'rose':d.theme;
+if(d.theme==='custom'){document.documentElement.style.setProperty('--bg',d.bg);document.documentElement.style.setProperty('--ink',d.ink);document.documentElement.style.setProperty('--accent',d.accent);document.documentElement.style.setProperty('--soft','#f5d8e1')}
+$('gallery').innerHTML='';
+photos.forEach(src=>{let frame=document.createElement('div');frame.className='photo-frame';let img=document.createElement('img');img.src=src;img.alt='Foto de recuerdo';frame.append(img);$('gallery').append(frame)});
+$('video').innerHTML='';let id=ytId(d.videoUrl);if(id){let f=document.createElement('iframe');f.src='https://www.youtube-nocookie.com/embed/'+encodeURIComponent(id);f.title='Video';f.allow='encrypted-media; picture-in-picture';f.allowFullscreen=true;$('video').append(f)}else if(localVideo){let v=document.createElement('video');v.src=localVideo;v.controls=true;v.style.width='100%';$('video').append(v)}
+$('musicPlayer').innerHTML='';let mid=ytId(d.music);if(mid){let f=document.createElement('iframe');f.src='https://www.youtube-nocookie.com/embed/'+encodeURIComponent(mid)+'?playsinline=1';f.title='Reproductor de música de YouTube';f.allow='accelerometer; autoplay; encrypted-media; picture-in-picture';$('musicPlayer').append(f)}else{$('musicPlayer').textContent='Agrega un enlace de YouTube para escuchar una canción.'}
+}
+function openLetter(){render();$('cover').classList.add('open');setTimeout(()=>{$('letter').classList.add('visible');$('letter').scrollIntoView({behavior:'smooth',block:'start'})},650)}
+$('open').onclick=openLetter;$('seal').onclick=openLetter;
+$('update').onclick=()=>{render();$('status').textContent='Página actualizada.'};
+$('theme').onchange=()=>render();
+['font','bg','ink','accent'].forEach(k=>$(k).oninput=()=>render());
+fields.filter(k=>k.endsWith('Input')||['coverIntro','openButtonText','to','from','heading','body','signature','bottomText'].includes(k)).forEach(k=>$(k).addEventListener('input',()=>render()));
+$('photos').onchange=e=>{[...e.target.files].forEach(file=>{if(file.size>1400000){$('status').textContent='Una foto supera 1.4 MB. Elige una más pequeña.';return}let r=new FileReader();r.onload=()=>{photos.push(r.result);render()};r.readAsDataURL(file)})};
+$('addUrl').onclick=()=>{let u=$('photoUrl').value.trim();if(u.startsWith('https://')||u.startsWith('http://')){photos.push(u);$('photoUrl').value='';render();$('status').textContent='Foto agregada.'}else $('status').textContent='Pega un enlace http o https válido.'};
+$('videoFile').onchange=e=>{let f=e.target.files[0];if(!f)return;if(f.size>4*1024*1024){$('status').textContent='El video supera 4 MB. Usa un enlace de YouTube.';return}let r=new FileReader();r.onload=()=>{localVideo=r.result;render()};r.readAsDataURL(f)};
+$('save').onclick=()=>{localStorage.setItem('cartaDulce',JSON.stringify(getData()));$('status').textContent='Guardado en este navegador.'};
+$('share').onclick=async()=>{let link=location.href.split('#')[0]+'#carta='+encodeURIComponent(btoa(unescape(encodeURIComponent(JSON.stringify(getData())))));try{await navigator.clipboard.writeText(link);$('status').textContent='Enlace copiado. Para que funcione para otras personas, publica primero el HTML en internet.'}catch(e){prompt('Copia este enlace:',link)}};
+function load(){try{let h=location.hash.match(/carta=([^&]+)/);let d=h?JSON.parse(decodeURIComponent(escape(atob(decodeURIComponent(h[1]))))):JSON.parse(localStorage.getItem('cartaDulce')||'null');if(d){fields.forEach(k=>{if(d[k]!==undefined)$(k).value=d[k]});render(d)}}catch(e){$('status').textContent='No se pudo cargar el enlace.'}}
+load();
+</script></body></html>
